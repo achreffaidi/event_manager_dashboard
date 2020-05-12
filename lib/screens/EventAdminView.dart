@@ -14,6 +14,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:testing_app/Api/Events/ListEvents.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:testing_app/Api/Plans/plans.dart';
+import 'package:testing_app/screens/EventStaffUI.dart';
 import 'package:testing_app/tools/Images.dart';
 import 'package:http/http.dart' as http;
 
@@ -103,6 +104,7 @@ class _EventAdminViewState extends State<EventAdminView> {
               _getHeaderImage(),
               _getBloc("Details", mode,  _getDetails(screenSize)) ,
               _getBloc("Plans", mode,  _getPlans(screenSize)) ,
+              _getBloc("Tools", mode,  _getTools(screenSize)) ,
             ],
           ),
         ),
@@ -204,6 +206,31 @@ class _EventAdminViewState extends State<EventAdminView> {
           itemBuilder: _planItemBuilder),
     );
 
+  }
+
+
+  _getTools(double screen){
+    return Container(
+      height: 300,
+      margin: EdgeInsets.all(20),
+      child: Column(
+        children: <Widget>[
+          RaisedButton(
+            child: Text("Stuff"),
+            onPressed: _goToStaff,
+          )
+        ],
+      ),
+    );
+
+  }
+
+
+  void _goToStaff() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EventStaffUI(event.id)),
+    );
   }
 
   Widget _planItemBuilder(context, index){

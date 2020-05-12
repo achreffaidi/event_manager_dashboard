@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:testing_app/screens/AddEventsUI.dart';
 import 'package:testing_app/screens/DashboardEventsUI.dart';
 
+import 'screens/EventStaffUI.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -81,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Text("Made with ❤ by achref "),
             RaisedButton(child: Text("Events"),onPressed: _goToEvent ,) ,
 
+
           ],
 
         ),
@@ -95,4 +98,5 @@ class _MyHomePageState extends State<MyHomePage> {
       MaterialPageRoute(builder: (context) => DashboardEventsUI()),
     );
   }
+
 }
