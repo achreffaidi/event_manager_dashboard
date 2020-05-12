@@ -215,6 +215,17 @@ class _CustomStaffDialogState extends State<CustomStaffDialog> {
   }
   _deletePlan() async {
 
+    var headers = {
+      "id":staff.id,
+    };
+
+    await http.delete(baseUrl+"api/event/staff",
+        headers: headers
+    ).then((http.Response response){
+      print(response.body);
+    });
+
+
   }
 
 
