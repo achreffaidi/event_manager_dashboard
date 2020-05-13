@@ -49038,7 +49038,7 @@ while(true)switch(u){case 0:r=P.h
 q=P.a1(["name",J.b3(s.ch.a.a),"event",s.f,"description",J.b3(s.cx.a.a),"options",s.dx,"cost",J.b3(s.cy.a.a),"color",s.y],r,P.r)
 r=P.a1(["Content-Type","application/json"],r,r)
 u=2
-return P.I(G.a1s("http://localhost:8080/api/plan",C.a3.dF(q),r).aF(new G.Sf(),P.B),$async$nC)
+return P.I(G.a1s("https://event-manager-red.herokuapp.com/api/plan",C.a3.dF(q),r).aF(new G.Sf(),P.B),$async$nC)
 case 2:return P.O(null,t)}})
 return P.P($async$nC,t)},
 nD:function(){var u=0,t=P.Q(null),s=this,r,q
@@ -49047,14 +49047,14 @@ while(true)switch(u){case 0:r=P.h
 q=P.a1(["id",s.d,"name",J.b3(s.ch.a.a),"event",s.f,"description",J.b3(s.cx.a.a),"options",s.dx,"cost",J.b3(s.cy.a.a),"color",s.y],r,P.r)
 r=P.a1(["Content-Type","application/json"],r,r)
 u=2
-return P.I(G.a1v("http://localhost:8080/api/plan",C.a3.dF(q),r).aF(new G.Sg(),P.B),$async$nD)
+return P.I(G.a1v("https://event-manager-red.herokuapp.com/api/plan",C.a3.dF(q),r).aF(new G.Sg(),P.B),$async$nD)
 case 2:return P.O(null,t)}})
 return P.P($async$nD,t)},
 nB:function(){var u=0,t=P.Q(null),s=this,r
 var $async$nB=P.K(function(a,b){if(a===1)return P.N(b,t)
 while(true)switch(u){case 0:r=P.h
 u=2
-return P.I(G.Aa("http://localhost:8080/api/plan",P.a1(["id",s.d],r,r)).aF(new G.S9(),P.B),$async$nB)
+return P.I(G.Aa("https://event-manager-red.herokuapp.com/api/plan",P.a1(["id",s.d],r,r)).aF(new G.S9(),P.B),$async$nB)
 case 2:return P.O(null,t)}})
 return P.P($async$nB,t)},
 $aJ:function(){return[G.mf]},
@@ -49150,7 +49150,7 @@ q=P.a1(["id",s.d,"state",a],r,P.r)
 P.b9(q)
 r=P.a1(["Content-Type","application/json"],r,r)
 u=2
-return P.I(G.a1v("http://localhost:8080/api/event/request",C.a3.dF(q),r).aF(new L.Sn(),P.B),$async$oF)
+return P.I(G.a1v("https://event-manager-red.herokuapp.com/api/event/request",C.a3.dF(q),r).aF(new L.Sn(),P.B),$async$oF)
 case 2:return P.O(null,t)}})
 return P.P($async$oF,t)},
 n6:function(a,b,c){var u=null
@@ -49198,7 +49198,7 @@ while(true)switch(u){case 0:p=H.c([],[P.k])
 for(r=s.x,q=0;q<r.length;++q)if(r[q])p.push(q)
 r=P.h
 u=2
-return P.I(G.a1s("http://localhost:8080/api/event/staff",C.a3.dF(P.a1(["email",J.b3(s.r.a.a),"event",s.e,"permissions",p],r,P.r)),P.a1(["Content-Type","application/json"],r,r)).aF(new E.Sy(),P.B),$async$ov)
+return P.I(G.a1s("https://event-manager-red.herokuapp.com/api/event/staff",C.a3.dF(P.a1(["email",J.b3(s.r.a.a),"event",s.e,"permissions",p],r,P.r)),P.a1(["Content-Type","application/json"],r,r)).aF(new E.Sy(),P.B),$async$ov)
 case 2:return P.O(null,t)}})
 return P.P($async$ov,t)},
 oE:function(){var u=0,t=P.Q(null),s=this,r,q,p,o
@@ -49209,14 +49209,14 @@ r=P.h
 p=P.a1(["id",s.d.a,"permissions",o],r,P.r)
 r=P.a1(["Content-Type","application/json"],r,r)
 u=2
-return P.I(G.a1v("http://localhost:8080/api/event/staff",C.a3.dF(p),r).aF(new E.Sz(),P.B),$async$oE)
+return P.I(G.a1v("https://event-manager-red.herokuapp.com/api/event/staff",C.a3.dF(p),r).aF(new E.Sz(),P.B),$async$oE)
 case 2:return P.O(null,t)}})
 return P.P($async$oE,t)},
 nP:function(){var u=0,t=P.Q(null),s=this,r
 var $async$nP=P.K(function(a,b){if(a===1)return P.N(b,t)
 while(true)switch(u){case 0:r=P.h
 u=2
-return P.I(G.Aa("http://localhost:8080/api/event/staff",P.a1(["id",s.d.a],r,r)).aF(new E.Sq(),P.B),$async$nP)
+return P.I(G.Aa("https://event-manager-red.herokuapp.com/api/event/staff",P.a1(["id",s.d.a],r,r)).aF(new E.Sq(),P.B),$async$nP)
 case 2:return P.O(null,t)}})
 return P.P($async$nP,t)},
 $aJ:function(){return[E.mg]}}
@@ -49323,7 +49323,7 @@ if(s.e==null)s.e=new P.at(Date.now(),!1)
 if(s.f==null)s.f=new P.at(Date.now(),!1).E(0,P.ci(2,0,0,0,0))
 u=P.h
 t=P.a1(["Content-Type","application/json"],u,u)
-G.a1s("http://localhost:8080/api/events",C.a3.dF(P.a1(["name",J.b3(s.r.a.a),"description",J.b3(s.x.a.a),"location",J.b3(s.y.a.a),"admin","5eb9d8fd6f813a3970e9ad66","start_date",s.e.dt(),"end_date",s.f.dt()],u,u)),t).aF(new G.QQ(),[P.fx,-1])},
+G.a1s("https://event-manager-red.herokuapp.com/api/events",C.a3.dF(P.a1(["name",J.b3(s.r.a.a),"description",J.b3(s.x.a.a),"location",J.b3(s.y.a.a),"admin","5eb9d8fd6f813a3970e9ad66","start_date",s.e.dt(),"end_date",s.f.dt()],u,u)),t).aF(new G.QQ(),[P.fx,-1])},
 $aJ:function(){return[G.qp]}}
 G.QO.prototype={
 $1:function(a){this.a.e=a}}
@@ -49419,14 +49419,14 @@ s=G.a0H(this.gMP(),!0,!0,!0,t)
 t=M.an(r,new T.bJ(C.aW,new B.t9(new B.O4(u,20,20,0.8),s,r,C.p,!1,r,!0,C.i5,!1,r,t,C.G,r),r),r,r,r,r,r,r,r,r,r)}return t},
 tj:function(){var u=0,t=P.Q(null),s=this
 var $async$tj=P.K(function(a,b){if(a===1)return P.N(b,t)
-while(true)switch(u){case 0:G.A1("http://localhost:8080/api/events",null).aF(new L.SM(s),P.B)
+while(true)switch(u){case 0:G.A1("https://event-manager-red.herokuapp.com/api/events",null).aF(new L.SM(s),P.B)
 return P.O(null,t)}})
 return P.P($async$tj,t)},
 MQ:function(a,b){var u,t,s,r=this,q=null,p=r.d
 if(b===p.length)return V.f7(T.bA(H.c([M.an(q,U.a35("assets/empty_list.png"),q,q,q,q,q,q,q,q,q),T.mP(N.x3(C.jL,L.bY(C.lB,C.n),L.Z("Add Event",q,q,q,A.bl(q,q,C.n,q,q,q,q,q,q,q,q,q,q,q,q,q,!0,q,q,q,q,q,q),q),r.gyA()),"Button")],[N.S]),C.v,C.u,C.y),q,q,q)
 u=p[b].a
 p=r.e
-if(!p.an(0,u))p.m(0,u,G.a_F(C.c.K("http://localhost:8080/api/event/image?event=",u),new D.m1(),!1))
+if(!p.an(0,u))p.m(0,u,G.a_F(C.c.K("https://event-manager-red.herokuapp.com/api/event/image?event=",u),new D.m1(),!1))
 t=C.c.K("image:",r.d[b].a)
 s=[N.S]
 return new M.oI(N.a32(D.h6(q,new T.i6(0.4,V.f7(new T.cs(C.L,q,q,T.bA(H.c([T.mP(new T.i6(1.5,U.a34(C.kG,p.i(0,u)),q),t),new T.bJ(C.aH,new T.i6(1.8,T.bA(H.c([L.Z(r.d[b].b,q,q,q,A.bl(q,q,q,q,q,q,q,q,q,q,q,25,q,C.O,q,q,!0,q,q,q,q,q,q),q),T.bL(H.c([L.bY(C.lz,q),new T.aL(10,q,q,q),L.Z(r.d[b].r,q,q,q,q,q)],s),C.v,C.u,C.y),T.bL(H.c([L.bY(C.lC,q),new T.aL(10,q,q,q),L.Z(r.d[b].d.dt(),q,q,q,q,q)],s),C.v,C.u,C.y),T.bL(H.c([L.bY(C.lD,q),new T.aL(10,q,q,q),L.Z(r.d[b].e.dt(),q,q,q,q,q)],s),C.v,C.u,C.y)],s),C.v,C.hg,C.y),q),q)],s),C.v,C.u,C.y),q),q,q,q),q),C.G,!1,q,q,q,q,q,q,q,q,q,q,q,new L.SK(r,a,b,u),q,q,q,q,q)),q)},
@@ -49460,7 +49460,7 @@ $1:function(a){var u=this.a
 return new U.rO(u.d[this.b],u.e.i(0,this.c),null)}}
 L.SJ.prototype={
 $1:function(a){var u=this.a
-u.e.m(0,this.b,G.a_F(C.c.K("http://localhost:8080/api/event/image?event=",u.d[this.c].a)+"&rand="+C.h.h(Date.now()),new D.m1(),!0))
+u.e.m(0,this.b,G.a_F(C.c.K("https://event-manager-red.herokuapp.com/api/event/image?event=",u.d[this.c].a)+"&rand="+C.h.h(Date.now()),new D.m1(),!0))
 u.ac(new L.SH())},
 $S:3}
 L.SH.prototype={
@@ -49472,7 +49472,7 @@ U.rO.prototype={
 ah:function(){return new U.wX(this.c,H.c([],[R.iO]),this.d,C.l)}}
 U.wX.prototype={
 tk:function(){var u=P.h
-G.A1("http://localhost:8080/api/plan",P.a1(["event",this.d.a],u,u)).aF(new U.TO(this),P.B)},
+G.A1("https://event-manager-red.herokuapp.com/api/plan",P.a1(["event",this.d.a],u,u)).aF(new U.TO(this),P.B)},
 as:function(){this.tk()
 this.aR()},
 H:function(a){var u=null
@@ -49519,7 +49519,7 @@ break
 case 3:D.a_j().$1(C.h.h(q.length))
 r=P.h
 u=5
-return P.I(s.q7(q,"http://localhost:8080/api/event/image",P.a1(["event",s.d.a],r,r)).aF(new U.TR(s),P.B),$async$lK)
+return P.I(s.q7(q,"https://event-manager-red.herokuapp.com/api/event/image",P.a1(["event",s.d.a],r,r)).aF(new U.TR(s),P.B),$async$lK)
 case 5:case 4:return P.O(null,t)}})
 return P.P($async$lK,t)},
 q7:function(a,b,c){return this.a_S(a,b,c)},
@@ -49528,7 +49528,7 @@ var $async$q7=P.K(function(d,e){if(d===1)return P.N(e,t)
 while(true)switch(u){case 0:k=r.d.a
 j=P.h
 c=P.a1(["event",k],j,j)
-q=P.j9("http://localhost:8080/api/event/image",0,null)
+q=P.j9("https://event-manager-red.herokuapp.com/api/event/image",0,null)
 P.b9(q)
 p=H.c([],[K.u2])
 o=P.tE(new G.qK(),new G.qL(),j,j)
@@ -49587,7 +49587,7 @@ return P.P($async$$1,t)}}
 U.TQ.prototype={
 $0:function(){P.b9("updating image")
 var u=this.a
-u.f=G.a_F(C.c.K("http://localhost:8080/api/event/image?event=",u.d.a)+"&rand="+C.h.h(Date.now()),new D.m1(),!1)},
+u.f=G.a_F(C.c.K("https://event-manager-red.herokuapp.com/api/event/image?event=",u.d.a)+"&rand="+C.h.h(Date.now()),new D.m1(),!1)},
 $S:0}
 U.TV.prototype={
 $1:function(a){P.b9(a)},
@@ -49609,7 +49609,7 @@ ah:function(){var u=P.h
 return new D.wY(H.c([],[O.iT]),H.c([],[u]),this.c,H.c(["Pending","Unpaid","Accepted","Refused"],[u]),C.l)}}
 D.wY.prototype={
 oe:function(){var u=P.h
-G.A1("http://localhost:8080/api/event/request",P.a1(["event",this.f],u,u)).aF(new D.TY(this),P.B)},
+G.A1("https://event-manager-red.herokuapp.com/api/event/request",P.a1(["event",this.f],u,u)).aF(new D.TY(this),P.B)},
 as:function(){this.oe()
 this.aR()},
 H:function(a){var u=null,t=L.Z("Requests",u,u,u,u,u)
@@ -49618,7 +49618,7 @@ RM:function(a,b){var u=this,t=null,s=[N.S]
 return V.f7(new T.bJ(C.aH,M.an(t,T.bL(H.c([T.bA(H.c([L.Z(u.d[b].c.f,t,t,t,A.bl(t,t,t,t,t,t,t,t,t,t,t,23,t,C.O,t,t,!0,t,t,t,t,t,t),t),L.Z(u.d[b].b.b,t,t,t,A.bl(t,t,t,t,t,t,t,t,t,t,t,18,t,C.O,t,t,!0,t,t,t,t,t,t),t),L.Z(J.b3(u.d[b].c.c)+" TND",t,t,t,A.bl(t,t,C.cM,t,t,t,t,t,t,t,t,18,t,C.O,t,t,!0,t,t,t,t,t,t),t),L.Z("Request State :"+u.r[u.d[b].a.a],t,t,t,t,t)],s),C.bg,C.u,C.y),T.bA(H.c([D.y9(L.bY(C.lE,t),L.Z("Update",t,t,t,t,t),new D.TZ(u,b)),D.y9(L.bY(C.iI,t),L.Z("Delete",t,t,t,t,t),new D.U_(u,b))],s),C.v,C.u,C.y)],s),C.v,C.hf,C.y),t,t,t,t,t,t,t,t,t),t),t,t,t)},
 TN:function(a){E.lz(new D.U0(a),this.c,!0,null).aF(new D.U1(this),P.B)},
 LJ:function(a){var u=P.h
-G.Aa("http://localhost:8080/api/event/request",P.a1(["id",a.a.b],u,u)).aF(new D.TW(this),P.B)},
+G.Aa("https://event-manager-red.herokuapp.com/api/event/request",P.a1(["id",a.a.b],u,u)).aF(new D.TW(this),P.B)},
 $aJ:function(){return[D.rP]}}
 D.TY.prototype={
 $1:function(a){var u=a.e,t=B.d6(U.d5(u).c.a.i(0,"charset")),s=a.x
@@ -49652,11 +49652,11 @@ D.rQ.prototype={
 ah:function(){return new D.wZ(H.c([],[O.j_]),H.c([],[P.h]),this.c,C.l)}}
 D.wZ.prototype={
 of:function(){var u=P.h
-G.A1("http://localhost:8080/api/event/staff",P.a1(["event",this.f],u,u)).aF(new D.U8(this),P.B)},
+G.A1("https://event-manager-red.herokuapp.com/api/event/staff",P.a1(["event",this.f],u,u)).aF(new D.U8(this),P.B)},
 od:function(){var u=0,t=P.Q(null),s=this
 var $async$od=P.K(function(a,b){if(a===1)return P.N(b,t)
 while(true)switch(u){case 0:u=2
-return P.I(G.A1("http://localhost:8080/api/event/staff/permissions",null).aF(new D.U6(s),P.B),$async$od)
+return P.I(G.A1("https://event-manager-red.herokuapp.com/api/event/staff/permissions",null).aF(new D.U6(s),P.B),$async$od)
 case 2:return P.O(null,t)}})
 return P.P($async$od,t)},
 as:function(){this.od()
@@ -49671,7 +49671,7 @@ return V.f7(new T.bJ(C.aH,M.an(t,T.bL(H.c([T.bA(C.d.K(H.c([L.Z(u.d[b].c.b,t,t,t,
 TS:function(a){E.lz(new D.Ud(this,a),this.c,!0,null).aF(new D.Ue(this),P.B)},
 QF:function(a){E.lz(new D.U9(this,a),this.c,!0,null).aF(new D.Ua(this),P.B)},
 LK:function(a){var u=P.h
-G.Aa("http://localhost:8080/api/event/staff",P.a1(["id",a.a],u,u)).aF(new D.U4(this),P.B)},
+G.Aa("https://event-manager-red.herokuapp.com/api/event/staff",P.a1(["id",a.a],u,u)).aF(new D.U4(this),P.B)},
 $aJ:function(){return[D.rQ]}}
 D.U8.prototype={
 $1:function(a){var u=a.e,t=B.d6(U.d5(u).c.a.i(0,"charset")),s=a.x
