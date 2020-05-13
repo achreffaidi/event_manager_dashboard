@@ -1,16 +1,35 @@
-# testing_app
+# Event Manager Dashboard 💻
 
-A new Flutter project.
+
+Flutter Web App 😁 .
+
+Flutter Version : `v1.12.13+hotfix.9` . 
+
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Use [peanut](https://pub.dev/packages/peanut#-readme-tab-) to build the App
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+#### Install Plugin
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```shell
+$ flutter pub global activate peanut
+```
+
+#### Running
+
+```shell
+$ flutter pub global run peanut:peanut
+```
+
+* This will build your project into a temporary directory, and then it will update the local `gh-pages` branch with its contents. 
+
+* Than you should checkout that branch using this command :
+
+
+```shell
+$ git checkout gh-pages
+```
+
+* Than push the code to the `gh-pages` branch in the remote repository .
