@@ -18,6 +18,8 @@ import 'package:testing_app/screens/EventStaffUI.dart';
 import 'package:testing_app/tools/Images.dart';
 import 'package:http/http.dart' as http;
 
+import 'EventRequestsUI.dart';
+
 
 class EventAdminView extends StatefulWidget {
   Event event ;
@@ -218,6 +220,10 @@ class _EventAdminViewState extends State<EventAdminView> {
           RaisedButton(
             child: Text("Stuff"),
             onPressed: _goToStaff,
+          ),
+          RaisedButton(
+            child: Text("Requests"),
+            onPressed: _goToRequests,
           )
         ],
       ),
@@ -230,6 +236,11 @@ class _EventAdminViewState extends State<EventAdminView> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => EventStaffUI(event.id)),
+    );
+  } void _goToRequests() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EventRequestsUI(event.id)),
     );
   }
 
