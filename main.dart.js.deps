@@ -376,9 +376,11 @@ file:///C:/Users/Ashraf/IdeaProjects/testing_app/.dart_tool/flutter_build/bc9df8
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/.packages
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Api/Events/ListEvents.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Api/Plans/plans.dart
+file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Api/Request/request.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Api/staff/staff.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Consts/Strings.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/PlanPopUp.dart
+file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/RequestPopUp.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/staffPopUp.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/translate_on_hover.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/extensions/hover_extension.dart
@@ -387,6 +389,7 @@ file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/main.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/screens/AddEventsUI.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/screens/DashboardEventsUI.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/screens/EventAdminView.dart
+file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/screens/EventRequestsUI.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/screens/EventStaffUI.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/tools/Images.dart
 file:///C:/Users/Ashraf/flutter/bin/cache/dart-sdk/lib/_internal/dart2js_platform.dill
