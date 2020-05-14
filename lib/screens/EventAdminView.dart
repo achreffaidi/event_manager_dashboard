@@ -18,6 +18,7 @@ import 'package:testing_app/screens/EventStaffUI.dart';
 import 'package:testing_app/tools/Images.dart';
 import 'package:http/http.dart' as http;
 
+import 'EventCountingUI.dart';
 import 'EventRequestsUI.dart';
 
 
@@ -224,6 +225,10 @@ class _EventAdminViewState extends State<EventAdminView> {
           RaisedButton(
             child: Text("Requests"),
             onPressed: _goToRequests,
+          ),
+          RaisedButton(
+            child: Text("Counting"),
+            onPressed: _goToCounting,
           )
         ],
       ),
@@ -241,6 +246,12 @@ class _EventAdminViewState extends State<EventAdminView> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => EventRequestsUI(event.id)),
+    );
+  }
+  void _goToCounting() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EventCountingUI(event.id)),
     );
   }
 

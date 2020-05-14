@@ -1,0 +1,270 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:testing_app/Api/EventCounting/event_counting.dart';
+import 'package:testing_app/Api/EventCounting/event_counting_details.dart';
+import 'package:testing_app/Api/Request/request.dart';
+import 'package:testing_app/Api/staff/staff.dart';
+import 'package:testing_app/Consts/Strings.dart';
+import 'package:testing_app/Widgets/RequestPopUp.dart';
+import 'package:testing_app/Widgets/countingPopUp.dart';
+import 'package:testing_app/Widgets/staffPopUp.dart';
+
+class EventCountingUI extends StatefulWidget {
+  String event ;
+  EventCountingUI(this.event) ;
+
+  @override
+  _EventCountingUIState createState() => _EventCountingUIState(event);
+}
+
+class _EventCountingUIState extends State<EventCountingUI> {
+
+
+  _EventCountingUIState(this.event) ;
+  List<Item> _counting;
+
+
+  String event  ;
+
+
+  _loadCounting(){
+    http.get(baseUrl+"api/event/presence",headers: {
+      "event":event
+    }).then((http.Response response){
+      print(response.body);
+      _counting = new List();
+      List<Counting> temp = eventCountingFromJson(response.body).data ;
+      for(Counting x in temp) _counting.add(Item(counting: x));
+      setState(() {
+
+      });
+    });
+  }
+
+
+  @override
+  void initState() {
+    _loadCounting();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Counting"),actions: <Widget>[
+        FlatButton.icon(onPressed: (){
+          _addCounting();
+        }, icon: Icon(Icons.add), label: Text("Add") , color: Colors.green,)
+      ],),
+      body: _getBody(),
+    );
+  }
+
+  _getBody() {
+    return Container(
+      child: _buildPanel()
+    );
+  }
+
+  Widget _buildPanel() {
+    return _counting==null?Container(): Container(
+      height: 800,
+      width: 500,
+      child: SingleChildScrollView(
+        child: ExpansionPanelList(
+          expansionCallback: (int index, bool isExpanded) {
+            setState(() {
+              _counting[index].isExpanded = !isExpanded;
+              if(!_counting[index].hasDetails()){
+                loadItemDetails(_counting[index]);
+              }
+            });
+          },
+          children: _counting.map<ExpansionPanel>((Item item) {
+            return ExpansionPanel(
+              headerBuilder: (BuildContext context, bool isExpanded) {
+                return ListTile(
+                  title: _getItemHeader(item),
+                );
+              },
+              body:  _getItemBody(item),
+              isExpanded: item.isExpanded,
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+
+  void loadItemDetails(Item item){
+    
+    http.get(baseUrl+"api/presence",headers: {
+      "id":item.counting.id
+    }).then((http.Response res){
+      item.eventCountingDetails = eventCountingDetailsFromJson(res.body);
+
+      item.counting.countIn = item.eventCountingDetails.listIn.length ;
+      item.counting.countOut = item.eventCountingDetails.listOut.length ;
+      setState(() {
+
+      });
+    });
+    
+    
+    
+  }
+  
+  
+  Widget _getItemHeader(Item item){
+    return Container(
+      child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(item.counting.name , style: TextStyle(fontSize: 22),),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                child: Row(children: <Widget>[
+                  Text("Allow Counting "),
+                  Switch(value: true,)
+                ],),
+              ),
+
+              Column(
+                children: <Widget>[
+                  Text("People In  : "+item.counting.countIn.toString()),
+                  Text("People Out : "+item.counting.countOut.toString()),
+                ],
+              ),
+
+              IconButton(icon:Icon(Icons.refresh) ,onPressed: (){
+                item.eventCountingDetails=null ;
+                loadItemDetails(item);
+                setState(() {
+
+                });
+              },),
+
+
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _getItemBody(Item item){
+    List<ListInElement> list ;
+    if(item.hasDetails()) list = item.eventCountingDetails.listIn + item.eventCountingDetails.listOut;
+    double itemHeight = 400.0 ;
+    return Container(
+
+
+      child: !item.hasDetails()? Center(child: CircularProgressIndicator(),):
+      Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              height:  itemHeight,
+              child: ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (BuildContext context, int index){
+                  bool isFirst = index<item.eventCountingDetails.listIn.length;
+                  return Container(child:
+                    Card(child: Row(
+                      children: <Widget>[
+                        Container(height: 50.0,width: 4,color: isFirst? Colors.green:Colors.deepOrange,),
+                        SizedBox(width: 20,),
+                        Text(list[index].name),
+                      ],
+                    ),),);
+
+                },
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+              FlatButton.icon(onPressed: (){
+                _updateCounting(item.counting);
+              }, icon: Icon(Icons.edit), label: Text("Edit"),color: Colors.orangeAccent,),
+              FlatButton.icon(onPressed: (){
+
+                _deleteCounting(item.counting);
+              }, icon: Icon(Icons.delete), label: Text("Delete"),color: Colors.red,),
+            ],)
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _addCounting() {
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => CustomCountingDialog(
+          null,event
+      ),
+    ).then((result){
+      _loadCounting();
+    });
+
+  }
+
+  void _updateCounting(Counting counting) {
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => CustomCountingDialog(
+         counting ,event
+      ),
+    ).then((result){
+      _loadCounting();
+    });
+
+  }
+
+  void _deleteCounting(Counting counting)  async {
+
+    var headers = {
+      "id":counting.id,
+    };
+
+    await http.delete(baseUrl+"api/event/presence",
+        headers: headers
+    ).then((http.Response response){
+      _loadCounting();
+      print(response.body);
+    });
+
+
+
+  }
+
+
+
+
+}
+
+
+class Item {
+  Item({
+    this.counting,
+    this.isExpanded = false,
+  });
+
+  bool hasDetails(){
+    return eventCountingDetails!=null ;
+  }
+  
+  
+  Counting counting ;
+  bool isExpanded;
+  EventCountingDetails eventCountingDetails ; 
+}
