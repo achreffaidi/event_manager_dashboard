@@ -161,7 +161,8 @@ class _CustomCountingDialogState extends State<CustomCountingDialog> {
 
     var body = {
       "id": counting.id,
-      "name":_controllerName.text.toString()
+      "name":_controllerName.text.toString(),
+      "state":counting.state
     };
 
     await http.put(baseUrl+"api/event/presence", headers: {
@@ -169,7 +170,8 @@ class _CustomCountingDialogState extends State<CustomCountingDialog> {
     }
         ,body: json.encode(body)
     ).then((http.Response response){
-      print(response.body);
+
+
     });
 
   }

@@ -31,12 +31,14 @@ class EventCounting {
 class Counting {
   String id;
   String name;
+  bool state;
   int countIn;
   int countOut;
 
   Counting({
     this.id,
     this.name,
+    this.state,
     this.countIn,
     this.countOut,
   });
@@ -44,6 +46,7 @@ class Counting {
   factory Counting.fromJson(Map<String, dynamic> json) => Counting(
     id: json["id"],
     name: json["name"],
+    state : json["state"],
     countIn: json["count_in"],
     countOut: json["count_out"],
   );
@@ -51,6 +54,7 @@ class Counting {
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,
+    "state": state,
     "count_in": countIn,
     "count_out": countOut,
   };

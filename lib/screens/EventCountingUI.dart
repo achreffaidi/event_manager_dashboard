@@ -132,7 +132,9 @@ class _EventCountingUIState extends State<EventCountingUI> {
               Container(
                 child: Row(children: <Widget>[
                   Text("Allow Counting "),
-                  Switch(value: true,)
+                  Switch(value: item.counting.state,onChanged: (value){
+                    updateCountingState(item, value);
+                  },)
                 ],),
               ),
 
@@ -158,6 +160,41 @@ class _EventCountingUIState extends State<EventCountingUI> {
       ),
     );
   }
+
+
+  void updateCountingState(Item item ,bool state) async {
+
+    item.counting.state = ! item.counting.state ;
+    setState(() {
+
+    });
+
+    var body = {
+      "id": item.counting.id,
+      "name":item.counting.name,
+      "state":state
+    };
+
+
+    await http.put(baseUrl+"api/event/presence", headers: {
+      "Content-Type":"application/json"
+    }
+        ,body: json.encode(body)
+    ).then((http.Response response){
+
+      if(response.statusCode!=200){
+
+        item.counting.state = ! item.counting.state ;
+        setState(() {
+
+        });
+      }
+      print(response.body);
+    });
+
+  }
+
+
   Widget _getItemBody(Item item){
     List<ListInElement> list ;
     if(item.hasDetails()) list = item.eventCountingDetails.listIn + item.eventCountingDetails.listOut;
