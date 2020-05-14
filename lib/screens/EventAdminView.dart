@@ -18,6 +18,7 @@ import 'package:testing_app/screens/EventStaffUI.dart';
 import 'package:testing_app/tools/Images.dart';
 import 'package:http/http.dart' as http;
 
+import 'EventCountingUI.dart';
 import 'EventRequestsUI.dart';
 
 
@@ -212,37 +213,61 @@ class _EventAdminViewState extends State<EventAdminView> {
 
 
   _getTools(double screen){
+
+    int _rowCount = 3 ;
     return Container(
       height: 300,
       margin: EdgeInsets.all(20),
-      child: Column(
-        children: <Widget>[
-          RaisedButton(
-            child: Text("Stuff"),
-            onPressed: _goToStaff,
-          ),
-          RaisedButton(
-            child: Text("Requests"),
-            onPressed: _goToRequests,
-          )
-        ],
+      child: new GridView.builder(
+          itemCount: 3,
+          gridDelegate:
+          new SliverGridDelegateWithFixedCrossAxisCount(
+              childAspectRatio: 0.8,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20,
+              crossAxisCount: _rowCount ),
+          itemBuilder: (BuildContext context , int index){
+            String title ;
+            var page ;
+            switch(index){
+              case 0 :
+                title = "Stuff" ;
+                page = EventStaffUI(event.id);
+                break;
+              case 1 :
+                title = "Requests" ;
+                page = EventRequestsUI(event.id);
+                break;
+              case 2 :
+                title = "Counting" ;
+                page = EventCountingUI(event.id);
+                break;
+            }
+
+            return getToolsButtons(title,page);
+          }),
+    );
+
+  }
+
+  Widget getToolsButtons(String title ,  page){
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => page),
+        );
+      },
+      child: Card(
+        child: Center(child: Text(title),),
       ),
     );
 
+
   }
 
 
-  void _goToStaff() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => EventStaffUI(event.id)),
-    );
-  } void _goToRequests() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => EventRequestsUI(event.id)),
-    );
-  }
+
 
   Widget _planItemBuilder(context, index){
     List<List<Color>> colorList = new List();
