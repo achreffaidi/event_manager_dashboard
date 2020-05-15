@@ -379,10 +379,12 @@ file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Api/EventCounting/event_cou
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Api/Events/ListEvents.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Api/Plans/plans.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Api/Request/request.dart
+file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Api/TimeSlots/timeslots.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Api/staff/staff.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Consts/Strings.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/PlanPopUp.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/RequestPopUp.dart
+file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/TimeSlotPopUp.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/countingPopUp.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/staffPopUp.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/translate_on_hover.dart
@@ -395,6 +397,7 @@ file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/screens/EventAdminView.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/screens/EventCountingUI.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/screens/EventRequestsUI.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/screens/EventStaffUI.dart
+file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/screens/EventTimeLineUI.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/tools/Images.dart
 file:///C:/Users/Ashraf/flutter/bin/cache/dart-sdk/lib/_internal/dart2js_platform.dill
 file:///C:/Users/Ashraf/flutter/bin/cache/flutter_web_sdk/lib/_engine/engine.dart
