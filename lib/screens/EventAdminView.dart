@@ -20,6 +20,7 @@ import 'package:http/http.dart' as http;
 
 import 'EventCountingUI.dart';
 import 'EventRequestsUI.dart';
+import 'EventTimeLineUI.dart';
 
 
 class EventAdminView extends StatefulWidget {
@@ -219,7 +220,7 @@ class _EventAdminViewState extends State<EventAdminView> {
       height: 300,
       margin: EdgeInsets.all(20),
       child: new GridView.builder(
-          itemCount: 3,
+          itemCount: 4,
           gridDelegate:
           new SliverGridDelegateWithFixedCrossAxisCount(
               childAspectRatio: 0.8,
@@ -241,6 +242,10 @@ class _EventAdminViewState extends State<EventAdminView> {
               case 2 :
                 title = "Counting" ;
                 page = EventCountingUI(event.id);
+                break;
+                case 3 :
+                title = "TimeLine" ;
+                page = EventTimeLineUI(event.id);
                 break;
             }
 
