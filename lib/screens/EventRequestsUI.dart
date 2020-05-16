@@ -10,7 +10,7 @@ import 'package:testing_app/Widgets/staffPopUp.dart';
 
 class EventRequestsUI extends StatefulWidget {
   String event ;
-  EventRequestsUI(this.event) ;
+  EventRequestsUI({Key key,this.event}) : super(key: key);
 
   @override
   _EventRequestsUIState createState() => _EventRequestsUIState(event);
@@ -45,7 +45,7 @@ class _EventRequestsUIState extends State<EventRequestsUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Requests"),actions: <Widget>[
+      appBar: AppBar(title: Text("Requests"),leading: Container(),actions: <Widget>[
         FlatButton.icon(onPressed: (){
           _loadRequests();
         }, icon: Icon(Icons.refresh), label: Text("Refresh") , color: Colors.green,)

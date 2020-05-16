@@ -12,7 +12,7 @@ import 'package:testing_app/Widgets/staffPopUp.dart';
 
 class EventTimeLineUI extends StatefulWidget {
   String event ;
-  EventTimeLineUI(this.event) ;
+  EventTimeLineUI({Key key,this.event}) : super(key: key);
 
   @override
   _EventTimeLineUIState createState() => _EventTimeLineUIState(event);
@@ -48,7 +48,7 @@ class _EventTimeLineUIState extends State<EventTimeLineUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Time Line"),actions: <Widget>[
+      appBar: AppBar(title: Text("Time Line"),leading: Container(),actions: <Widget>[
         FlatButton.icon(onPressed: (){
           _addTimeSlot();
         }, icon: Icon(Icons.add), label: Text("Add TimeSlot") , color: Colors.green,)

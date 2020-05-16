@@ -7,8 +7,9 @@ import 'package:testing_app/Consts/Strings.dart';
 import 'package:testing_app/Widgets/staffPopUp.dart';
 
 class EventStaffUI extends StatefulWidget {
+  EventStaffUI({Key key,this.event}) : super(key: key);
+
   String event ;
-  EventStaffUI(this.event) ;
 
   @override
   _EventStaffUIState createState() => _EventStaffUIState(event);
@@ -51,7 +52,9 @@ class _EventStaffUIState extends State<EventStaffUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Staff"),actions: <Widget>[
+      appBar: AppBar(title: Text("Staff"),
+        leading: Container(),
+        actions: <Widget>[
         FlatButton.icon(onPressed: (){
           _newStaff(null);
         }, icon: Icon(Icons.add), label: Text("add Stuff") , color: Colors.green,)
