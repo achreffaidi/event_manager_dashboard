@@ -382,10 +382,13 @@ file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Api/Request/request.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Api/TimeSlots/timeslots.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Api/staff/staff.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Consts/Strings.dart
+file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Consts/theme.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/PlanPopUp.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/RequestPopUp.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/TimeSlotPopUp.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/countingPopUp.dart
+file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/menu_item_tile.dart
+file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/sidebare_menu.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/staffPopUp.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/Widgets/translate_on_hover.dart
 file:///C:/Users/Ashraf/IdeaProjects/testing_app/lib/extensions/hover_extension.dart
