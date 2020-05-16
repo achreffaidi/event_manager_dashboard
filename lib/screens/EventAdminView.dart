@@ -24,13 +24,12 @@ import 'EventTimeLineUI.dart';
 
 
 class EventAdminView extends StatefulWidget {
+  EventAdminView({Key key,this.event}) : super(key: key);
   Event event ;
-  ImageProvider imageProvider ;
 
-  EventAdminView(this.event,this.imageProvider);
 
   @override
-  _EventAdminViewState createState() => _EventAdminViewState(event, imageProvider);
+  _EventAdminViewState createState() => _EventAdminViewState(event);
 }
 
 
@@ -41,7 +40,7 @@ class _EventAdminViewState extends State<EventAdminView> {
   ImageProvider imageProvider ;
 
 
-  _EventAdminViewState(this.event,this.imageProvider);
+  _EventAdminViewState(this.event);
 
 
   _loadPlans(){
@@ -57,33 +56,19 @@ class _EventAdminViewState extends State<EventAdminView> {
 
   @override
   void initState() {
+    imageProvider = AdvancedNetworkImage(
+
+      baseUrl+"api/event/image?event="+event.id+"&rand="+DateTime.now().millisecondsSinceEpoch.toString(),
+
+      useDiskCache: false,
+      cacheRule: CacheRule(maxAge: const Duration(days: 7)),
+    ) ;
     _loadPlans();
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text(event.name),),
-        body: ResponsiveBuilder(
-          builder: (context, sizingInformation) {
-            // Check the sizing information here and return your UI
-            if (sizingInformation.deviceScreenType ==
-                DeviceScreenType.Desktop) {
-              return _getBody(0);
-            }
-
-            if (sizingInformation.deviceScreenType == DeviceScreenType.Tablet) {
-              return _getBody(1);
-            }
-
-            if (sizingInformation.deviceScreenType == DeviceScreenType.Mobile) {
-              return _getBody(2);
-            }
-
-            return _getBody(0);
-          },
-
-        ));
+    return _getBody(1);
   }
 
 
@@ -91,6 +76,7 @@ class _EventAdminViewState extends State<EventAdminView> {
   _getBody(int mode) {
 
     double padding  ;
+    mode = 1 ;
     switch(mode){
       case 0 : padding = MediaQuery.of(context).size.width*0.25 ; break ;
       case 1 : padding = MediaQuery.of(context).size.width*0.15 ;break ;
@@ -108,7 +94,7 @@ class _EventAdminViewState extends State<EventAdminView> {
               _getHeaderImage(),
               _getBloc("Details", mode,  _getDetails(screenSize)) ,
               _getBloc("Plans", mode,  _getPlans(screenSize)) ,
-              _getBloc("Tools", mode,  _getTools(screenSize)) ,
+              //_getBloc("Tools", mode,  _getTools(screenSize)) ,
             ],
           ),
         ),
@@ -213,63 +199,8 @@ class _EventAdminViewState extends State<EventAdminView> {
   }
 
 
-  _getTools(double screen){
-
-    int _rowCount = 3 ;
-    return Container(
-      height: 300,
-      margin: EdgeInsets.all(20),
-      child: new GridView.builder(
-          itemCount: 4,
-          gridDelegate:
-          new SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: 0.8,
-              crossAxisSpacing: 20,
-              mainAxisSpacing: 20,
-              crossAxisCount: _rowCount ),
-          itemBuilder: (BuildContext context , int index){
-            String title ;
-            var page ;
-            switch(index){
-              case 0 :
-                title = "Stuff" ;
-                page = EventStaffUI(event.id);
-                break;
-              case 1 :
-                title = "Requests" ;
-                page = EventRequestsUI(event.id);
-                break;
-              case 2 :
-                title = "Counting" ;
-                page = EventCountingUI(event.id);
-                break;
-                case 3 :
-                title = "TimeLine" ;
-                page = EventTimeLineUI(event.id);
-                break;
-            }
-
-            return getToolsButtons(title,page);
-          }),
-    );
-
-  }
-
-  Widget getToolsButtons(String title ,  page){
-    return GestureDetector(
-      onTap: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => page),
-        );
-      },
-      child: Card(
-        child: Center(child: Text(title),),
-      ),
-    );
 
 
-  }
 
 
 

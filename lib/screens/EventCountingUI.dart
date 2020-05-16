@@ -14,7 +14,7 @@ import 'package:testing_app/Widgets/staffPopUp.dart';
 
 class EventCountingUI extends StatefulWidget {
   String event ;
-  EventCountingUI(this.event) ;
+  EventCountingUI({Key key,this.event}) : super(key: key);
 
   @override
   _EventCountingUIState createState() => _EventCountingUIState(event);
@@ -54,7 +54,7 @@ class _EventCountingUIState extends State<EventCountingUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Counting"),actions: <Widget>[
+      appBar: AppBar(title: Text("Counting"),leading: Container(),actions: <Widget>[
         FlatButton.icon(onPressed: (){
           _addCounting();
         }, icon: Icon(Icons.add), label: Text("Add") , color: Colors.green,)
