@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testing_app/Api/Events/ListEvents.dart';
 import 'package:testing_app/Consts/Strings.dart';
 import 'package:intl/intl.dart';
@@ -28,14 +29,12 @@ class _DashboardEventsUIState extends State<DashboardEventsUI> {
 
   List<Event> events = new List<Event>();
   Map<String , ImageProvider> images  = new Map();
-
   List<DropdownMenuItem<Event>> _dropdownMenuItems;
   Event _selectedEvent;
   int _selectedEventIndex;
   int _selectedPage = 0 ;
   Widget _currentPage ;
   List<List<Widget>> pages = new List();
-
 
 
   @override
@@ -62,6 +61,7 @@ class _DashboardEventsUIState extends State<DashboardEventsUI> {
 
             ),
           ),
+          RaisedButton.icon(onPressed: _addEvent, icon: Icon(Icons.add), label: Text("Add Event",style: TextStyle(color: Colors.white),),color: Colors.green,),
         ],
       ),
       body:
@@ -97,10 +97,12 @@ class _DashboardEventsUIState extends State<DashboardEventsUI> {
 
 
   _loadEvents() async{
-    
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String id = await prefs.get("id");
     http.get(baseUrl+"api/events/admin",
     headers: {
-      "user":"5eb9d8fd6f813a3970e9ad66"
+      "user":id
     }
     ).then((http.Response response){
 

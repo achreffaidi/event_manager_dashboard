@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testing_app/Consts/theme.dart';
 
 import 'menu_item_tile.dart';
@@ -9,6 +10,8 @@ class SideBarMenu extends StatefulWidget {
   Function _onChange ;
 
   SideBarMenu(this._onChange);
+
+
 
   @override
   _SideBarMenuState createState() => _SideBarMenuState(_onChange);
@@ -23,14 +26,36 @@ class _SideBarMenuState extends State<SideBarMenu>
   Function _onChange ;
 
 
+  String username ="";
+  String email ="" ;
+  String id ="";
+
+
+
   _SideBarMenuState(this._onChange);
 
   AnimationController _animationController;
   Animation<double> _animation;
 
+  void initVariables()async{
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    username = await prefs.getString("name");
+    id = await prefs.getString("id");
+    email = await prefs.getString("email");
+
+    setState(() {
+
+    });
+
+  }
+
   @override
   void initState() {
     super.initState();
+
+
+
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 100));
 
@@ -85,7 +110,7 @@ class _SideBarMenuState extends State<SideBarMenu>
                             width: _animation.value >= 250 ? 20 : 0,
                           ),
                           (_animation.value >= 250)
-                              ? Text('user name ',
+                              ? Text(username,
                               style: menuListTileDefaultText)
                               : Container(),
                         ],
@@ -96,7 +121,7 @@ class _SideBarMenuState extends State<SideBarMenu>
                       Spacer(),
                       (_animation.value >= 250)
                           ? Text(
-                        'User Name',
+                        email,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
@@ -106,7 +131,7 @@ class _SideBarMenuState extends State<SideBarMenu>
                           : Container(),
                       (_animation.value >= 250)
                           ? Text(
-                        'user id goes here ',
+                        id,
                         style: TextStyle(
                           fontSize: 13,
                           color: Colors.white,
@@ -114,6 +139,7 @@ class _SideBarMenuState extends State<SideBarMenu>
                         ),
                       )
                           : Container(),
+                      RaisedButton.icon(onPressed: _logout, icon: Icon(Icons.exit_to_app), label: Text("logout"))
                     ],
                   ),
                 ),
@@ -170,7 +196,20 @@ class _SideBarMenuState extends State<SideBarMenu>
       },
     );
   }
+
+  void _logout() async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+     await prefs.remove("id");
+     await prefs.remove("name");
+     await prefs.remove("email");
+     Navigator.of(context).pop();
+
+
+  }
 }
+
+
 
 class Menu {
   String title;
