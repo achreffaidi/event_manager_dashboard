@@ -64,10 +64,15 @@ class _EventStaffUIState extends State<EventStaffUI> {
   }
 
   _getBody() {
+    double width = MediaQuery.of(context).size.width*0.8 ;
     return Container(
-      child: ListView.builder(
-          itemCount: _staffs.length,
-          itemBuilder: _staffItemBuilder)
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Card(child: Container(  child: generateTable())),
+          Card(child: Container(width: 300.0, child: getPermissionTable(),),)
+        ],
+      )
     );
   }
 
@@ -76,6 +81,104 @@ class _EventStaffUIState extends State<EventStaffUI> {
     for(int i in per) list.add(Text(_permissions[i]));
     return list ;
   }
+
+
+  Widget generateTable(){
+
+    List<DataColumn> temp = new List();
+    _permissions.forEach((s){
+      temp.add(
+        DataColumn(
+            label: Text(
+              s,
+              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w900),
+            )),
+      );
+    });
+
+    return PaginatedDataTable(
+
+      source: StaffDataSource(_staffs,_permissions,_deleteStaff,_updateStaff),
+      header: Text("Table of Staffs"),
+      rowsPerPage: 5,
+      columns: [
+
+        DataColumn(
+            label: Text(
+              "name",
+              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w900),
+            )),
+        DataColumn(
+            label: Text(
+              "email",
+              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w900),
+            )),
+        DataColumn(
+            label: Text(
+              "phone",
+              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w900),
+            )),
+      ] +
+      temp +
+      [
+        DataColumn(
+            label: Text(
+              "Update",
+              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w900),
+            )),
+        DataColumn(
+            label: Text(
+              "Delete",
+              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w900),
+            )),
+
+      ],
+    );
+
+  }
+
+  Widget getPermissionTable(){
+
+    List<DataRow> temp = new List();
+    List<int> permissions = [];
+    for(int i = 0 ; i<_permissions.length ; i++) permissions.add(0);
+    _staffs.forEach((staff){
+      staff.permissions.forEach((x){
+        permissions[x]++;
+      });
+    });
+    for(int i = 0 ; i<_permissions.length ; i++) {
+      temp.add(
+        DataRow(
+          cells: [
+        DataCell(
+        Text(_permissions[i]),
+    ),
+            DataCell(
+              Text(permissions[i].toString()),
+            ),
+          ]
+        ));
+    };
+
+
+    return DataTable(
+
+      columns: [
+        DataColumn(
+          label: Text("Permission"),
+          numeric: false,
+        ),
+        DataColumn(
+          label: Text("Staffs"),
+          numeric: true,
+        ),
+      ],
+      rows: temp ,
+    );
+
+  }
+
 
   Widget _staffItemBuilder(BuildContext context, int index) {
     return Card(
@@ -144,6 +247,70 @@ class _EventStaffUIState extends State<EventStaffUI> {
       _loadStaff();
     });
   }
+
+
+}
+
+
+class StaffDataSource extends DataTableSource {
+
+
+
+  final List<Staff> _results;
+  List<String> _permissions ;
+  final Function _deleteStaff ,_updateStaff  ;
+  StaffDataSource(this._results,this._permissions,this._deleteStaff,this._updateStaff);
+
+  void _sort<T>(Comparable<T> getField(Staff d), bool ascending) {
+    notifyListeners();
+  }
+
+  int _selectedCount = 0;
+
+
+
+  @override
+  DataRow getRow(int index) {
+
+    List<DataCell> temp = new List();
+
+
+    assert(index >= 0);
+    if (index >= _results.length) return null;
+    final Staff result = _results[index];
+    for(int i =0 ; i<_permissions.length ; i++){
+      if(result.permissions.contains(i)) temp.add(DataCell(Icon(Icons.check,color: Colors.green,)));
+      else temp.add(DataCell(Icon(Icons.not_interested,color: Colors.red,)));
+    }
+    return DataRow.byIndex(
+        index: index,
+        cells: <DataCell>[
+          DataCell(Text('${result.user.name}',style: TextStyle(fontWeight: FontWeight.bold),)),
+          DataCell(Text('${result.user.email}')),
+          DataCell(Text('${result.user.number}')),
+
+        ]
+        + temp + [
+          DataCell(Text('update' , style: TextStyle(color:Colors.blue),),onTap:(){
+            _updateStaff(result);
+          }),
+          DataCell(Text('delete' , style: TextStyle(color:Colors.red),),onTap:(){
+            _deleteStaff(result);
+          }),
+        ]
+
+
+    );
+  }
+
+  @override
+  int get rowCount => _results.length;
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get selectedRowCount => _selectedCount;
 
 
 }

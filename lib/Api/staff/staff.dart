@@ -53,6 +53,7 @@ class User {
   String name;
   String password;
   String email;
+  String number ;
   int v;
 
   User({
@@ -60,7 +61,8 @@ class User {
     this.name,
     this.password,
     this.email,
-    this.v,
+    this.number,
+    this.v
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -68,6 +70,7 @@ class User {
     name: json["name"],
     password: json["password"],
     email: json["email"],
+    number: json["number"],
     v: json["__v"],
   );
 
@@ -76,6 +79,7 @@ class User {
     "name": name,
     "password": password,
     "email": email,
+    "number": number,
     "__v": v,
   };
 }

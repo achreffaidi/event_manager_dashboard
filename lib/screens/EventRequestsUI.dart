@@ -62,7 +62,14 @@ class _EventRequestsUIState extends State<EventRequestsUI> {
 
 
       ],),
-      body: _getBody(),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: SingleChildScrollView(
+          child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: _getBody()),
+        ),
+      ),
     );
   }
 
@@ -93,15 +100,32 @@ class _EventRequestsUIState extends State<EventRequestsUI> {
     html.Url.revokeObjectUrl(url);
   }
 
-  _getBody() {
+  Widget _getBody() {
     return Container(
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Card(child: Container( width: 600, child: generateTable())),
-          Card(child: Container(
-            width: 400.0,
-            height: 400,
-            child: DatumLegendRequestsState.withRealData(_requests),),)
+          Card(child: Container( width: 850, child: generateTable())),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Card(child: Container(
+                width: 400.0,
+                height: 400,
+                child: DatumLegendRequestsState.withRealData(_requests),),),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: 400.0
+                ),
+                child: Card(child: SingleChildScrollView(
+                  child: Container(
+                    child: getRequestsByPlanTable(),),
+                ),),
+              ),
+
+            ],
+          ),
+
         ],
       ));
   }
@@ -132,6 +156,18 @@ class _EventRequestsUIState extends State<EventRequestsUI> {
         DataColumn(
             onSort: onSort,
             label: Text(
+              "Email",
+              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w900),
+            )),
+        DataColumn(
+            onSort: onSort,
+            label: Text(
+              "Phone",
+              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w900),
+            )),
+        DataColumn(
+            onSort: onSort,
+            label: Text(
               "Plan",
               style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w900),
             )),
@@ -154,6 +190,109 @@ class _EventRequestsUIState extends State<EventRequestsUI> {
 
   }
 
+
+  Widget getRequestsByPlanTable(){
+
+
+    List<PlanItem> plans = new List();
+    List<String> plansID = new List();
+    PlanItem total = PlanItem("Total",0);
+    PlanItem totalCount = PlanItem("Total",0);
+
+    _requests.forEach((req){
+      if(!plansID.contains(req.plan.id)){
+        plans.add(new PlanItem(req.plan.name,req.plan.cost));
+        plansID.add(req.plan.id);
+      }
+    });
+
+    _requests.forEach((req){
+      int index = plansID.indexOf(req.plan.id);
+      plans[index].requests++ ;
+      totalCount.requests++ ;
+      switch(req.request.state){
+        case 0 : plans[index].unapproved ++ ;totalCount.unapproved++; total.unapproved+=plans[index].cost; break;
+        case 1 : plans[index].unpaid ++ ;totalCount.unpaid++;total.unpaid+=plans[index].cost; break;
+        case 2 : plans[index].paid ++;totalCount.paid++;total.paid+=plans[index].cost; break;
+      }
+    });
+
+
+    List<DataRow> temp = new List();
+
+    for(int i = 0 ; i<plans.length ; i++) {
+      temp.add(
+          DataRow(
+              cells: [
+                DataCell(
+                  Text(plans[i].plan),
+                ),
+                DataCell(
+                  Text(plans[i].requests.toString()),
+                ),
+                DataCell(
+                  Text('${plans[i].unapproved} ( ${plans[i].unapproved*plans[i].cost} TND)'),
+                ),
+                DataCell(
+                  Text('${plans[i].unpaid} ( ${plans[i].unpaid*plans[i].cost} TND)'),
+                ),
+                DataCell(
+                  Text('${plans[i].paid} ( ${plans[i].paid*plans[i].cost} TND)'),
+                ),
+              ]
+          ));
+    }
+    temp.add( DataRow(
+
+        cells: [
+          DataCell(
+            Text(total.plan ,style: TextStyle(fontWeight: FontWeight.bold),),
+
+          ),
+          DataCell(
+            Text(totalCount.requests.toString()),
+          ),
+          DataCell(
+            Text('${totalCount.unapproved} ( ${total.unapproved} TND)'),
+          ),
+          DataCell(
+            Text('${totalCount.unpaid} ( ${total.unpaid} TND)'),
+          ),
+          DataCell(
+            Text('${totalCount.paid} ( ${total.paid} TND)'),
+          ),
+        ]
+    ));
+
+
+    return DataTable(
+
+      columns: [
+        DataColumn(
+          label: Text("Plan"),
+          numeric: false,
+        ),
+        DataColumn(
+          label: Text("Requests"),
+          numeric: true,
+        ),DataColumn(
+          label: Text("UnApproved"),
+          numeric: true,
+        ),
+        DataColumn(
+          label: Text("Unpaid"),
+          numeric: true,
+        ),
+        DataColumn(
+          label: Text("Paid"),
+          numeric: true,
+        ),
+      ],
+      rows: temp  ,
+    );
+
+  }
+
   onSort(int columnIndex, bool ascending) {
 
     ascending = _sort ;
@@ -166,20 +305,20 @@ class _EventRequestsUIState extends State<EventRequestsUI> {
       } else {
         _requests.sort((a, b) => b.user.name.compareTo(a.user.name));
       }
-    } else if (columnIndex ==2) {
+    } else if (columnIndex ==4) {
       if (ascending) {
         _requests.sort((a, b) => a.plan.name.compareTo(b.plan.name));
       } else {
         _requests.sort((a, b) => b.plan.name.compareTo(a.plan.name));
       }
-    }else if (columnIndex == 3) {
+    }else if (columnIndex == 5) {
       if (ascending) {
         _requests.sort((a, b) => a.plan.cost.compareTo(b.plan.cost));
       } else {
         _requests.sort((a, b) => b.plan.cost.compareTo(a.plan.cost));
       }
     }
-    else if (columnIndex == 4) {
+    else if (columnIndex == 6) {
       if (ascending) {
         _requests.sort((a, b) => a.request.state.compareTo(b.request.state));
       } else {
@@ -225,6 +364,15 @@ _loadRequests();
 
 }
 
+class PlanItem{
+  double cost ;
+  String plan ;
+  double paid = 0.0 ;
+  double unpaid = 0.0 ;
+  double unapproved =0.0 ;
+  int requests = 0 ;
+  PlanItem(this.plan,this.cost);
+}
 
 class RequestsDataSource extends DataTableSource {
 
@@ -259,6 +407,8 @@ class RequestsDataSource extends DataTableSource {
         cells: <DataCell>[
           DataCell(Text(index.toString())),
           DataCell(Text('${result.user.name}')),
+          DataCell(Text('${result.user.email}')),
+          DataCell(Text('${result.user.number}')),
           DataCell(Text('${result.plan.name}')),
           DataCell(Text('${result.plan.cost} TND')),
           DataCell(Text(requestState[result.request.state]),showEditIcon: true,onTap: (){
