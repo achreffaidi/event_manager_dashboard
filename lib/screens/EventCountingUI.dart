@@ -26,6 +26,7 @@ class _EventCountingUIState extends State<EventCountingUI> {
   _EventCountingUIState(this.event) ;
   List<Item> _counting;
 
+  Item currentItem ;
 
   String event  ;
 
@@ -65,39 +66,41 @@ class _EventCountingUIState extends State<EventCountingUI> {
 
   _getBody() {
     return Container(
-      child: _buildPanel()
+      child: Row(
+        children: <Widget>[
+          _getCard("List Counting", SingleChildScrollView(child: getCountingListTable())),
+          _getCard("Details", Container(
+              height: 700,
+              width: 500,
+              child: SingleChildScrollView(child: getCountingDetailsTable()))),
+
+        ],
+      )
     );
   }
 
-  Widget _buildPanel() {
-    return _counting==null?Container(): Container(
-      height: 800,
-      width: 500,
-      child: SingleChildScrollView(
-        child: ExpansionPanelList(
-          expansionCallback: (int index, bool isExpanded) {
-            setState(() {
-              _counting[index].isExpanded = !isExpanded;
-              if(!_counting[index].hasDetails()){
-                loadItemDetails(_counting[index]);
-              }
-            });
-          },
-          children: _counting.map<ExpansionPanel>((Item item) {
-            return ExpansionPanel(
-              headerBuilder: (BuildContext context, bool isExpanded) {
-                return ListTile(
-                  title: _getItemHeader(item),
-                );
-              },
-              body:  _getItemBody(item),
-              isExpanded: item.isExpanded,
-            );
-          }).toList(),
+  _getCard(String title , Widget body){
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          child: Column(
+
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(title,style: TextStyle(fontSize: 22 , color: Colors.blueGrey),),
+              ),
+              body
+            ],
+          ),
         ),
       ),
     );
+
   }
+
 
 
   void loadItemDetails(Item item){
@@ -116,49 +119,6 @@ class _EventCountingUIState extends State<EventCountingUI> {
     
     
     
-  }
-  
-  
-  Widget _getItemHeader(Item item){
-    return Container(
-      child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(item.counting.name , style: TextStyle(fontSize: 22),),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                child: Row(children: <Widget>[
-                  Text("Allow Counting "),
-                  Switch(value: item.counting.state,onChanged: (value){
-                    updateCountingState(item, value);
-                  },)
-                ],),
-              ),
-
-              Column(
-                children: <Widget>[
-                  Text("People In  : "+item.counting.countIn.toString()),
-                  Text("People Out : "+item.counting.countOut.toString()),
-                ],
-              ),
-
-              IconButton(icon:Icon(Icons.refresh) ,onPressed: (){
-                item.eventCountingDetails=null ;
-                loadItemDetails(item);
-                setState(() {
-
-                });
-              },),
-
-
-            ],
-          ),
-        ],
-      ),
-    );
   }
 
 
@@ -195,8 +155,83 @@ class _EventCountingUIState extends State<EventCountingUI> {
   }
 
 
+
+  Widget getCountingDetailsTable(){
+
+    Item item = currentItem;
+    if(item==null) return Container();
+    if(item.eventCountingDetails==null)return Center(child: CircularProgressIndicator());
+
+    List<DataRow> temp = new List();
+
+    for(int i = 0 ; i<item.eventCountingDetails.listIn.length ; i++) {
+      temp.add(
+          DataRow(
+              cells: [
+                DataCell(
+                    Text(item.eventCountingDetails.listIn[i].name),
+                ),
+                DataCell(
+                  Text(item.eventCountingDetails.listIn[i].email),
+                ),
+                DataCell(
+                  Text('${item.eventCountingDetails.listIn[i].number}'),
+                ),
+                DataCell(
+                  Text("IN", style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold),),
+                ),
+
+              ]
+          ));
+    }
+    for(int i = 0 ; i<item.eventCountingDetails.listOut.length ; i++) {
+      temp.add(
+          DataRow(
+              cells: [
+                DataCell(
+                  Text(item.eventCountingDetails.listOut[i].name),
+                ),
+                DataCell(
+                  Text(item.eventCountingDetails.listOut[i].email),
+                ),
+                DataCell(
+                  Text('${item.eventCountingDetails.listOut[i].number}'),
+                ),
+                DataCell(
+                  Text("OUT", style: TextStyle(color: Colors.deepOrange,fontWeight: FontWeight.bold),),
+                ),
+
+              ]
+          ));
+    }
+
+
+
+    return DataTable(
+
+      columns: [
+        DataColumn(
+          label: Text("Name"),
+        ),
+        DataColumn(
+          label: Text("Email"),
+        ),DataColumn(
+          label: Text("Phone"),
+        ),
+        DataColumn(
+          label: Text("State"),
+        ),
+
+      ],
+      rows: temp ,
+    );
+
+  }
+
   Widget _getItemBody(Item item){
-    List<ListInElement> list ;
+
+    if(item==null) return Container();
+    List<User> list ;
     if(item.hasDetails()) list = item.eventCountingDetails.listIn + item.eventCountingDetails.listOut;
     double itemHeight = 400.0 ;
     return Container(
@@ -239,6 +274,96 @@ class _EventCountingUIState extends State<EventCountingUI> {
         ),
       ),
     );
+  }
+
+  Widget getCountingListTable(){
+
+
+
+
+    List<DataRow> temp = new List();
+
+    for(int i = 0 ; i<_counting.length ; i++) {
+      temp.add(
+          DataRow(
+              cells: [
+                DataCell(
+                  Text(_counting[i].counting.name),
+                  onTap:(){
+                    onRowTap(_counting[i]);
+                  }
+                ),
+                DataCell(
+                  Text(_counting[i].counting.countIn.toString()),
+                    onTap:(){
+                      onRowTap(_counting[i]);
+                    }
+                ),
+                DataCell(
+                  Text(_counting[i].counting.countOut.toString()),
+                    onTap:(){
+                      onRowTap(_counting[i]);
+                    }
+                ),
+                DataCell(
+                  Switch(value: _counting[i].counting.state,onChanged: (value){
+                    updateCountingState(_counting[i], value);
+                  },)
+                ),
+                DataCell(
+                  IconButton(icon: Icon(Icons.delete,color: Colors.red,),onPressed: (){
+                    _deleteCounting(_counting[i].counting);
+                  },)
+                ),
+                DataCell(
+                    IconButton(icon: Icon(Icons.edit,color: Colors.blue,),onPressed: (){
+                      _updateCounting(_counting[i].counting);
+                    },)
+                ),
+              ]
+          ));
+    }
+
+
+
+    return DataTable(
+
+      columns: [
+        DataColumn(
+          label: Text("Name"),
+          numeric: false,
+        ),
+        DataColumn(
+          label: Text("People IN"),
+          numeric: true,
+        ),DataColumn(
+          label: Text("People Out"),
+          numeric: true,
+        ),
+        DataColumn(
+          label: Text("Allow Counting"),
+        ),
+        DataColumn(
+          label: Text(""),
+        ),
+        DataColumn(
+          label: Text(""),
+        ),
+      ],
+      rows: temp  ,
+    );
+
+  }
+
+
+  void onRowTap(Item item){
+    currentItem = item;
+    setState(() {
+
+    });
+    if(!item.hasDetails()){
+      loadItemDetails(item);
+    }
   }
 
   void _addCounting() {

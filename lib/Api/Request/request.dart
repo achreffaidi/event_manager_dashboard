@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:testing_app/Api/staff/staff.dart';
+
 Requests requestsFromJson(String str) => Requests.fromJson(json.decode(str));
 
 String requestsToJson(Requests data) => json.encode(data.toJson());
@@ -51,7 +53,7 @@ class RequestElement {
 class Plan {
   String description;
   List<String> options;
-  int cost;
+  double cost;
   int color;
   String id;
   String name;
@@ -144,34 +146,4 @@ class RequestRequest {
   };
 }
 
-class User {
-  String id;
-  String name;
-  String password;
-  String email;
-  int v;
 
-  User({
-    this.id,
-    this.name,
-    this.password,
-    this.email,
-    this.v,
-  });
-
-  factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["_id"],
-    name: json["name"],
-    password: json["password"],
-    email: json["email"],
-    v: json["__v"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "_id": id,
-    "name": name,
-    "password": password,
-    "email": email,
-    "__v": v,
-  };
-}
