@@ -41,6 +41,7 @@ dependencies:
   csv: ^4.0.3
   timeline_list: ^0.0.5
   shared_preferences: ^0.5.7+2
+  flutter_tags: ^0.4.8+1
 
 dev_dependencies:
   flutter_test:

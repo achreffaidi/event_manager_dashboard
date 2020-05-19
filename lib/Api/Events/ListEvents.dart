@@ -33,6 +33,7 @@ class EventList {
 }
 
 class Event {
+  List<String> tags;
   String id;
   String name;
   String admin;
@@ -45,6 +46,7 @@ class Event {
   int v;
 
   Event({
+    this.tags,
     this.id,
     this.name,
     this.admin,
@@ -58,6 +60,7 @@ class Event {
   });
 
   factory Event.fromJson(Map<String, dynamic> json) => Event(
+    tags: List<String>.from(json["tags"].map((x) => x)),
     id: json["_id"],
     name: json["name"],
     admin: json["admin"],
@@ -71,6 +74,7 @@ class Event {
   );
 
   Map<String, dynamic> toJson() => {
+    "tags": List<dynamic>.from(tags.map((x) => x)),
     "_id": id,
     "name": name,
     "admin": admin,
@@ -83,4 +87,3 @@ class Event {
     "__v": v,
   };
 }
-

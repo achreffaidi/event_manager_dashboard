@@ -1,26 +1,23 @@
+import 'dart:convert';
 import 'dart:html' as html;
-import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter_tags/flutter_tags.dart';
+import 'package:testing_app/Api/Events/allTags.dart';
 import 'package:testing_app/Consts/Strings.dart';
 import 'package:testing_app/Widgets/PlanPopUp.dart';
 import 'package:testing_app/extensions/hover_extension.dart';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+
 import 'package:testing_app/Api/Events/ListEvents.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:testing_app/Api/Plans/plans.dart';
-import 'package:testing_app/screens/EventStaffUI.dart';
-import 'package:testing_app/tools/Images.dart';
-import 'package:http/http.dart' as http;
 
-import 'EventCountingUI.dart';
-import 'EventRequestsUI.dart';
-import 'EventTimeLineUI.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+
 
 
 class EventAdminView extends StatefulWidget {
@@ -37,7 +34,10 @@ class EventAdminView extends StatefulWidget {
 class _EventAdminViewState extends State<EventAdminView> {
   Event event ;
   List<Plan> plans = new List();
+  List<TagItem> tags = new List();
+  List<String> tagNames = new List();
   ImageProvider imageProvider ;
+  String _searchTagError = null ;
 
 
   _EventAdminViewState(this.event);
@@ -53,6 +53,15 @@ class _EventAdminViewState extends State<EventAdminView> {
       });
     });
   }
+  _loadTags(){
+    http.get(baseUrl+"api/tags").then((http.Response response){
+      tags = tagsListFromJson(response.body).data ;
+      tagNames = tags.map((t) => t.name).toList();
+      setState(() {
+
+      });
+    });
+  }
 
   @override
   void initState() {
@@ -63,6 +72,7 @@ class _EventAdminViewState extends State<EventAdminView> {
       useDiskCache: false,
       cacheRule: CacheRule(maxAge: const Duration(days: 7)),
     ) ;
+    _loadTags();
     _loadPlans();
     super.initState();
   }
@@ -71,6 +81,25 @@ class _EventAdminViewState extends State<EventAdminView> {
     return _getBody(1);
   }
 
+
+  Widget _getDate(DateTime dateTime){
+    final m = new DateFormat('MMM');
+    return Container(
+      child: Card(
+          child :  Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text(dateTime.day.toString() , style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blue , fontSize: 25),),
+                Text(m.format(dateTime), style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blue),),
+              ],
+            ),),
+          )
+      ),
+    );
+
+  }
 
 
   _getBody(int mode) {
@@ -92,7 +121,15 @@ class _EventAdminViewState extends State<EventAdminView> {
               Container(
               ) ,
               _getHeaderImage(),
-              _getBloc("Details", mode,  _getDetails(screenSize)) ,
+              IntrinsicHeight(
+
+               child: Row(
+                 crossAxisAlignment: CrossAxisAlignment.stretch,
+                 children: <Widget>[
+                   Expanded(child: _getBloc("Details", mode,  _getDetails(screenSize*0.4))) ,
+                   _getBloc("Tags", mode,  _getTags(screenSize*0.4)) ,],
+               ),
+             ),
               _getBloc("Plans", mode,  _getPlans(screenSize)) ,
               //_getBloc("Tools", mode,  _getTools(screenSize)) ,
             ],
@@ -125,35 +162,53 @@ class _EventAdminViewState extends State<EventAdminView> {
   }
 
   _getHeaderImage(){
+    final double bottomPadding = 50 ;
   return  Padding(
     padding: const EdgeInsets.all(8.0),
     child: Stack(
       children: <Widget>[
-        Container(
-          child: Hero(
-            tag: "image:"+event.id,
-            child: AspectRatio(
-              aspectRatio: 1.5,
-              child: Container(
-                color: Colors.red,
-                child: Image(
-                  image: imageProvider,
-                  fit: BoxFit.fitHeight,
+        Column(
+          children: <Widget>[
+            Container(
+              child: Hero(
+                tag: "image:"+event.id,
+                child: AspectRatio(
+                  aspectRatio: 3,
+                  child: Card(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(image: Image(
+                          image: imageProvider,
+                          fit: BoxFit.fitWidth,
+                        ).image , fit: BoxFit.fitWidth)
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
+            SizedBox(height: bottomPadding,)
+          ],
         ),
         Positioned(
-            bottom: 10,
+            bottom: 10 + bottomPadding,
             right: 10,
-            child: RaisedButton.icon(onPressed: _updatePicture, icon: Icon(Icons.file_upload), label: Text("Update Cover")))
+            child: RaisedButton.icon(onPressed: _updatePicture, icon: Icon(Icons.file_upload), label: Text("Update Cover"))) ,
+        Positioned(
+          bottom: bottomPadding/2,
+          left: 25,
+          child: Container(
+            height: 80,
+            width: 80,
+            child: _getDate(event.startDate),
+          ),
+        )
       ],
     ),
   );
   }
 
-  _getBloc(String title , int mode , Widget widget){
+  Widget  _getBloc(String title , int mode , Widget widget){
 
     var style = TextStyle(fontSize: 30) ;
     return Padding(
@@ -182,9 +237,19 @@ class _EventAdminViewState extends State<EventAdminView> {
       ),
     );
 
-
   }
 
+
+  _getTags(double screen){
+    return Container(
+      width: screen*0.7,
+      margin: EdgeInsets.all(10) ,
+    child: Container(
+      child: _getAllTags(),
+    ));
+
+
+  }
 
   _getPlans(double screen){
     return Container(
@@ -333,4 +398,136 @@ class _EventAdminViewState extends State<EventAdminView> {
     });
   }
 
+  Widget _getAllTags() {
+    return  Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Tags(
+
+
+        textField: TagsTextField(
+          duplicates: false,
+
+          textStyle: TextStyle(fontSize: 16),
+          inputDecoration: InputDecoration(
+            icon: Icon(Icons.alternate_email) ,
+            errorText: _searchTagError
+
+          ),
+
+          onSubmitted: (String str) {
+
+            str = str.trim();
+            if(str.isEmpty){
+              setState(() {
+                _searchTagError = "Tag can't be Empty";
+
+              });
+            }else if(str.split(" ").length>1){
+              setState(() {
+                _searchTagError = "Tag should be one word";
+
+              });
+            }else{
+
+              setState(() {
+                _searchTagError = null ;
+              });
+              if(!tagNames.contains(str.trim())) _addTag(str.trim());
+            }
+            // Add item to the data source.
+
+          },
+        ),
+        itemCount: tags.length, // required
+        itemBuilder: (int index){
+          final TagItem item = tags[index];
+
+          return ItemTags(
+
+            key: Key(index.toString()),
+            index: index, // required
+            pressEnabled: true,
+            active: event.tags.contains(item.id),
+            title: item.name,
+            customData: item.id,
+            icon: ItemTagsIcon(icon: Icons.alternate_email),
+            textStyle: TextStyle( fontSize: 16, ),
+            combine: ItemTagsCombine.withTextAfter, // OR null,
+            onPressed: _onTagItemPress,
+            activeColor: Colors.blue,
+            colorShowDuplicate: Colors.white,
+
+          );
+
+        },
+      ),
+    );
+  }
+
+  void _addTag(String str) {
+    http.post(baseUrl+"api/tags",headers: {
+      "name":str
+    }).then((http.Response response){
+      print(response.body);
+      if(response.statusCode==200){
+        var data = json.decode(response.body);
+        String id = data["data"]["_id"];
+        tags.add(
+            TagItem(count: 0,id: id , name: str));
+        tagNames.add(str);
+        setTagAsActive(id);
+
+      }
+
+    });
+  }
+
+
+
+  void _onTagItemPress(Item i) {
+    var body = {
+      "event":event.id,
+      "tag":i.customData.toString()
+    };
+
+    if(i.active){
+      setTagAsActive(i.customData.toString());
+    }else{
+      http.delete(baseUrl+"api/event/tags"  , headers : body).then((http.Response response){
+        print(response.body);
+        if(response.statusCode==200){
+          setState(() {
+
+          });
+        }
+      });
+
+
+    }
+  }
+
+
+  void setTagAsActive(String id){
+
+    print("setting "+id+" to active ");
+
+
+
+    var body = {
+      "event":event.id,
+      "tag":id
+    };
+    http.post(baseUrl+"api/event/tags",body: json.encode(body) , headers: {
+      "Content-Type":"application/json"
+    }).then((http.Response response){
+      print(response.body);
+      if(response.statusCode==200){
+        event.tags.add(id);
+
+        setState(() {
+
+        });
+      }
+    });
+  }
 }
