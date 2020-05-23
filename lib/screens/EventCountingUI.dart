@@ -24,7 +24,7 @@ class _EventCountingUIState extends State<EventCountingUI> {
 
 
   _EventCountingUIState(this.event) ;
-  List<Item> _counting;
+  List<Item> _counting = new List();
 
   Item currentItem ;
 

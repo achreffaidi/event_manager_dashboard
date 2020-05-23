@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'dart:html' as html;
 import 'dart:typed_data';
 import 'package:flutter_tags/flutter_tags.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:testing_app/Api/Events/allTags.dart';
+import 'package:testing_app/Api/SocialNetwork/socialmedialinks.dart';
 import 'package:testing_app/Consts/Strings.dart';
 import 'package:testing_app/Widgets/PlanPopUp.dart';
+import 'package:testing_app/Widgets/SocialMediaLinkPopUp.dart';
 import 'package:testing_app/extensions/hover_extension.dart';
 
 import 'package:flutter/material.dart';
@@ -35,6 +38,7 @@ class _EventAdminViewState extends State<EventAdminView> {
   Event event ;
   List<Plan> plans = new List();
   List<TagItem> tags = new List();
+  List<SocialMediaLink> links = new List();
   List<String> tagNames = new List();
   ImageProvider imageProvider ;
   String _searchTagError = null ;
@@ -62,6 +66,16 @@ class _EventAdminViewState extends State<EventAdminView> {
       });
     });
   }
+  _loadSocial(){
+    http.get(baseUrl+"api/event/sociallinks",headers: {
+      "event":event.id
+    }).then((http.Response response){
+      links = socialLinksFromJson(response.body).socialMediaLinks ;
+      setState(() {
+
+      });
+    });
+  }
 
   @override
   void initState() {
@@ -73,6 +87,7 @@ class _EventAdminViewState extends State<EventAdminView> {
       cacheRule: CacheRule(maxAge: const Duration(days: 7)),
     ) ;
     _loadTags();
+    _loadSocial() ;
     _loadPlans();
     super.initState();
   }
@@ -130,6 +145,7 @@ class _EventAdminViewState extends State<EventAdminView> {
                    _getBloc("Tags", mode,  _getTags(screenSize*0.4)) ,],
                ),
              ),
+              _getBloc("Social Links", mode,  _getSocialLinks(screenSize)) ,
               _getBloc("Plans", mode,  _getPlans(screenSize)) ,
               //_getBloc("Tools", mode,  _getTools(screenSize)) ,
             ],
@@ -263,11 +279,17 @@ class _EventAdminViewState extends State<EventAdminView> {
 
   }
 
+  _getSocialLinks(double screen){
+    return Container(
+      height: 200,
+      margin: EdgeInsets.all(20),
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: links.length+1,
+          itemBuilder: _socialItemBuilder),
+    );
 
-
-
-
-
+  }
 
 
   Widget _planItemBuilder(context, index){
@@ -529,5 +551,61 @@ class _EventAdminViewState extends State<EventAdminView> {
         });
       }
     });
+  }
+
+  Widget _socialItemBuilder(BuildContext context, int index) {
+
+    return GestureDetector(
+      onTap: index==links.length?(){
+        _addSocialLink() ;
+      }:(){
+        _updateSocialLink(links[index]);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(child: AspectRatio(
+          aspectRatio: 1,
+          child: Container(
+              height: 50,
+
+              child: index==links.length?
+
+              Container(child: Center(child: Icon(Icons.add),),):
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Icon(MdiIcons.fromString(links[index].website),size: 80,),
+                  Text(links[index].title, style: TextStyle(fontSize: 20 , color: Colors.blueGrey , fontWeight: FontWeight.bold),),
+
+                ],
+              )).showCursorOnHover.changeColorOnHover(Color.lerp(Colors.blue, Colors.white, 0.8)),
+        )).moveUpOnHover,
+      ),
+    );
+  }
+
+  void _addSocialLink(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => CustomSocialLinkDialog(
+      event.id,null
+      ),
+    ).then((result){
+      _loadSocial();
+    });
+  }
+
+
+
+  void _updateSocialLink(SocialMediaLink link) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => CustomSocialLinkDialog(
+          event.id,link
+      ),
+    ).then((result){
+      _loadSocial();
+    });
+
   }
 }
