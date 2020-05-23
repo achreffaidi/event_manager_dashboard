@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testing_app/Widgets/colorOnHover.dart';
 import 'dart:html' as html;
 
 import 'package:testing_app/Widgets/translate_on_hover.dart';
@@ -24,6 +25,14 @@ extension HoverExtensions on Widget {
   Widget get moveUpOnHover {
     return TranslateOnHover(
       child: this,
+    );
+  }
+
+
+  Widget  changeColorOnHover(color) {
+    return ChangeColorOnHover (
+      child: this,
+      color: color,
     );
   }
 }
