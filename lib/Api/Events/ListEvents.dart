@@ -43,6 +43,7 @@ class Event {
   String location;
   DateTime createdAt;
   DateTime updatedAt;
+  String imageLink ;
   int v;
 
   Event({
@@ -56,6 +57,7 @@ class Event {
     this.location,
     this.createdAt,
     this.updatedAt,
+    this.imageLink,
     this.v,
   });
 
@@ -70,6 +72,7 @@ class Event {
     location: json["location"],
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),
+    imageLink: json["imageLink"],
     v: json["__v"],
   );
 
@@ -84,6 +87,7 @@ class Event {
     "location": location,
     "createdAt": createdAt.toIso8601String(),
     "updatedAt": updatedAt.toIso8601String(),
+    "imageLink" : imageLink.toString(),
     "__v": v,
   };
 }

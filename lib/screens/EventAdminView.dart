@@ -40,8 +40,8 @@ class _EventAdminViewState extends State<EventAdminView> {
   List<TagItem> tags = new List();
   List<SocialMediaLink> links = new List();
   List<String> tagNames = new List();
-  ImageProvider imageProvider ;
   String _searchTagError = null ;
+  String _imageLink ;
 
 
   _EventAdminViewState(this.event);
@@ -79,13 +79,8 @@ class _EventAdminViewState extends State<EventAdminView> {
 
   @override
   void initState() {
-    imageProvider = AdvancedNetworkImage(
 
-      baseUrl+"api/event/image?event="+event.id+"&rand="+DateTime.now().millisecondsSinceEpoch.toString(),
-
-      useDiskCache: false,
-      cacheRule: CacheRule(maxAge: const Duration(days: 7)),
-    ) ;
+    _imageLink = event.imageLink;
     _loadTags();
     _loadSocial() ;
     _loadPlans();
@@ -192,11 +187,8 @@ class _EventAdminViewState extends State<EventAdminView> {
                   aspectRatio: 3,
                   child: Card(
                     child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(image: Image(
-                          image: imageProvider,
-                          fit: BoxFit.fitWidth,
-                        ).image , fit: BoxFit.fitWidth)
+                      decoration:_imageLink.isEmpty?null: BoxDecoration(
+                        image: DecorationImage(image: Image.network(_imageLink).image , fit: BoxFit.fitWidth)
                       ),
                     ),
                   ),
@@ -344,23 +336,15 @@ class _EventAdminViewState extends State<EventAdminView> {
      await uploadImage(bytesFromPicker,baseUrl+"api/event/image", {
         "event":event.id,
       }).then((result) async {
-        if(result){
-          print("successfully Uploaded") ;
+
+          print("result "+result) ;
 
           setState(() {
             print("updating image") ;
-            imageProvider = AdvancedNetworkImage(
-
-              baseUrl+"api/event/image?event="+event.id+"&rand="+DateTime.now().millisecondsSinceEpoch.toString(),
-
-              useDiskCache: false,
-              cacheRule: CacheRule(maxAge: const Duration(days: 7)),
-            ) ;
+            _imageLink = result ;
           });
 
-        }else{
 
-        }
      }) ;
 
     }
@@ -369,7 +353,7 @@ class _EventAdminViewState extends State<EventAdminView> {
   }
 
 
-  Future<bool> uploadImage(Uint8List file,  url , headers) async {
+  Future<String> uploadImage(Uint8List file,  url , headers) async {
 
     var headers = {
       "event":event.id,
@@ -388,12 +372,16 @@ class _EventAdminViewState extends State<EventAdminView> {
 
     http.StreamedResponse res = await request.send().catchError((onError){
       print(onError);
-    });
-    print("here") ;
-    print("event : "+event.id);
+    }) ;
     print(res.statusCode);
-    return res.statusCode >= 200 && res.statusCode < 300;
+    String link ;
+    await res.stream.bytesToString().then((val){
+      link = val ;
 
+
+    });
+
+    return link;
   }
 
 
